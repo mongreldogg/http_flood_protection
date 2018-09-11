@@ -19,9 +19,7 @@ class FloodProtection
         $cookie = $_COOKIE['__access'];
         $verify = md5(ACCESS_TOKEN_SALT.self::GetClientIP().$browser.$_SERVER['SERVER_NAME']);
         if (sizeof(get_included_files()) == 1) {
-            if (strlen($referrer) > 0 && $cookie == $verify) {
-                header('Location: '.$referrer);
-            } else {
+            if ($cookie == $verify) {
                 //DO NUFFIN
             }
         } else {
