@@ -18,12 +18,8 @@ class FloodProtection
         $browser = $_SERVER['HTTP_USER_AGENT'];
         $cookie = $_COOKIE['__access'];
         $verify = md5(ACCESS_TOKEN_SALT.self::GetClientIP().$browser.$_SERVER['SERVER_NAME']);
-        if (sizeof(get_included_files()) == 1 && $cookie == $verify) {
-            //DO NUFFIN, CONTINUE
-        } else {
-            if ($cookie != $verify && !self::IsBot()) {
-                self::GenerateBrowserCheck($domain, $verify, $browser, $referrer);
-            }
+        if ($cookie != $verify && !self::IsBot()) {
+            self::GenerateBrowserCheck($domain, $verify, $browser, $referrer);
         }
     }
 
