@@ -86,7 +86,7 @@ class FloodProtection
     {
         return
             isset($_SERVER['HTTP_USER_AGENT'])
-            && preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'])
+            && preg_match('/aolbuild|baidu|bingbot|msnbot|bingpreview|duckduckgo|adsbot-google|googlebot|mediapartners-google|teoma|slurp|yandex/i', $_SERVER['HTTP_USER_AGENT'])
           ;
     }
 }
