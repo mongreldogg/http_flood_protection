@@ -16,7 +16,7 @@ class FloodProtection
         $referrer = $_SERVER['HTTP_REFERRER'];
         $domain = $_SERVER['SERVER_NAME'];
         $browser = $_SERVER['HTTP_USER_AGENT'];
-        $cookie = $_COOKIE['__access'];
+        @$cookie = $_COOKIE['__access'];
         $verify = md5(ACCESS_TOKEN_SALT.self::GetClientIP().$browser.$_SERVER['SERVER_NAME']);
         if ($cookie != $verify && !self::IsBot()) {
             self::GenerateBrowserCheck($domain, $verify, $browser, $referrer);
