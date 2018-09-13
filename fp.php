@@ -23,7 +23,7 @@ class FloodProtection
         }
     }
 
-    protected static function GenerateBrowserCheck($domain, $cookie, $browser, $referrer)
+    protected static function GenerateBrowserCheck($domain, $cookie, $browser, $url)
     {
         ?>
 
