@@ -13,17 +13,16 @@ class FloodProtection
     public function __construct()
     {
         $url = $_SERVER['REQUEST_URI'];
-        $referrer = $_SERVER['HTTP_REFERRER'];
         $domain = $_SERVER['SERVER_NAME'];
         $browser = $_SERVER['HTTP_USER_AGENT'];
         @$cookie = $_COOKIE['__access'];
         $verify = md5(ACCESS_TOKEN_SALT.self::GetClientIP().$browser.$_SERVER['SERVER_NAME']);
         if ($cookie != $verify && !self::IsBot()) {
-            self::GenerateBrowserCheck($domain, $verify, $browser, $referrer);
+            self::GenerateBrowserCheck($domain, $verify, $browser, $url);
         }
     }
 
-    protected static function GenerateBrowserCheck($domain, $cookie, $browser, $url)
+    protected static function GenerateBrowserCheck($domain, $cookie, $browser, $referrer)
     {
         ?>
 
