@@ -15,6 +15,4 @@
 
 require_once 'fp.php';
 
-?>
-
-<h1>Main page</h1>
+include 'index.internal.php';
