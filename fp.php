@@ -10,17 +10,48 @@ define('ACCESS_TOKEN_SALT', 'somethingICantRemember');
 
 class FloodProtection
 {
+
+    /**
+     * Predefined IPs for which not to show this check
+     */
+
+    private static $bypassIPs = [
+        '91.219.236.184',
+        '77.109.141.170',
+        '91.205.41.208',
+        '94.242.216.60',
+        '78.41.203.75',
+        //'127.0.0.1',
+        '10.0.0.5'
+    ];
+
+    /**
+     * Browser check initializer
+     */
+
     public function __construct()
     {
         $url = $_SERVER['REQUEST_URI'];
         $domain = $_SERVER['SERVER_NAME'];
         $browser = $_SERVER['HTTP_USER_AGENT'];
         @$cookie = $_COOKIE['__access'];
-        $verify = md5(ACCESS_TOKEN_SALT.self::GetClientIP().$browser.$_SERVER['SERVER_NAME']);
-        if ($cookie != $verify && !self::IsBot()) {
+        $clientIP = self::GetClientIP();
+        $verify = md5(ACCESS_TOKEN_SALT.$clientIP.$browser.$_SERVER['SERVER_NAME']);
+        $bypass = false;
+        foreach(self::$bypassIPs as $ip){
+            if($clientIP == $ip) {
+                $bypass = true;
+                break;
+            }
+        }
+        if ($cookie != $verify && !self::IsBot() && $bypass == false) {
             self::GenerateBrowserCheck($domain, $verify, $browser, $url);
         }
     }
+
+    /**
+     * A content body for browser check script page
+     */
 
     protected static function GenerateBrowserCheck($domain, $cookie, $browser, $referrer)
     {
@@ -28,7 +59,7 @@ class FloodProtection
 
 <html>
 <head>
-    <title>Checking your browser accessing <?=$domain; ?></title>
+    <title>Checking your browser before accessing <?=$domain; ?></title>
 </head>
 <body>
     <script type="text/javascript">
@@ -52,7 +83,12 @@ class FloodProtection
         exit;
     }
 
-    protected static function GetClientIP()
+    /**
+     * A function to identify real client IP address. 
+     * One of those environment variables should be passed by web server to PHP
+     */
+
+    public static function GetClientIP()
     {
         if (isset($_SERVER)) {
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -76,6 +112,11 @@ class FloodProtection
 
         return getenv('REMOTE_ADDR');
     }
+
+    /**
+     * Identifies a search bot / crawler by client header
+     * UPD: perform additional checks since not that much of a secure way
+     */
 
     protected static function IsBot()
     {
