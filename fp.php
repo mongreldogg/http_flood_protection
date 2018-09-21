@@ -75,7 +75,7 @@ class FloodProtection
                     'Thank you!');
         }
     </script>
-    Checking your browser accessing <?=$domain; ?>. You will be redirected to main page in a few seconds.
+    Checking your browser before accessing <?=$domain; ?>. You will be redirected to main page in a few seconds.
 </body>
 </html>
 
